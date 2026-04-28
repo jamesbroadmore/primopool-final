@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, AlertCircle } from 'lucide-react';
 import { toast } from '../hooks/use-toast';
+
+// Validation helpers
+const validateEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
+const validatePhone = (phone) => {
+  // Australian phone number format
+  const re = /^(?:\+?61|0)[2-478](?:[ -]?[0-9]){8}$/;
+  return re.test(phone.replace(/\s/g, ''));
+};
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -14,35 +26,106 @@ const Contact = () => {
     suburb: '',
     message: ''
   });
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [touched, setTouched] = useState({});
+  
+  const validateField = useCallback((name, value) => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Name is required';
+        if (value.trim().length < 2) return 'Name must be at least 2 characters';
+        return '';
+      case 'email':
+        if (!value.trim()) return 'Email is required';
+        if (!validateEmail(value)) return 'Please enter a valid email address';
+        return '';
+      case 'phone':
+        if (!value.trim()) return 'Phone number is required';
+        if (!validatePhone(value)) return 'Please enter a valid Australian phone number';
+        return '';
+      case 'suburb':
+        if (!value.trim()) return 'Suburb is required';
+        return '';
+      case 'message':
+        if (!value.trim()) return 'Message is required';
+        if (value.trim().length < 10) return 'Please provide more details (at least 10 characters)';
+        return '';
+      default:
+        return '';
+    }
+  }, []);
   
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error when user starts typing
+    if (touched[name]) {
+      const error = validateField(name, value);
+      setErrors(prev => ({ ...prev, [name]: error }));
+    }
+  };
+  
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    const error = validateField(name, value);
+    setErrors(prev => ({ ...prev, [name]: error }));
+  };
+  
+  const validateForm = () => {
+    const newErrors = {};
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key]);
+      if (error) newErrors[key] = error;
     });
+    setErrors(newErrors);
+    setTouched({ name: true, email: true, phone: true, suburb: true, message: true });
+    return Object.keys(newErrors).length === 0;
   };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      toast({
+        title: "Please fix the errors",
+        description: "Some fields need your attention.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
-    
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      suburb: '',
-      message: ''
-    });
-    setIsSubmitting(false);
+    try {
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+      
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        suburb: '',
+        message: ''
+      });
+      setTouched({});
+      setErrors({});
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or call us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   const contactInfo = [
@@ -71,6 +154,18 @@ const Contact = () => {
       label: 'Business hours'
     }
   ];
+
+  const renderFieldError = (fieldName) => {
+    if (errors[fieldName] && touched[fieldName]) {
+      return (
+        <p className="text-red-400 text-xs mt-1 flex items-center gap-1" role="alert">
+          <AlertCircle className="w-3 h-3" aria-hidden="true" />
+          {errors[fieldName]}
+        </p>
+      );
+    }
+    return null;
+  };
   
   return (
     <div className="bg-[#0a0f1a] pt-28 sm:pt-32 pb-20">
@@ -125,82 +220,121 @@ const Contact = () => {
             <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl p-6 sm:p-8">
               <h2 className="text-xl sm:text-2xl font-serif text-white mb-4 sm:mb-6">Request Free Quote</h2>
               
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" noValidate>
                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <Label htmlFor="name" className="text-gray-300 mb-2 text-sm">Full Name *</Label>
+                    <Label htmlFor="name" className="text-gray-300 mb-2 text-sm">
+                      Full Name <span className="text-red-400">*</span>
+                    </Label>
                     <Input 
                       id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      required
-                      className="bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37]"
+                      onBlur={handleBlur}
+                      aria-invalid={errors.name && touched.name ? "true" : "false"}
+                      aria-describedby={errors.name && touched.name ? "name-error" : undefined}
+                      className={`bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37] ${
+                        errors.name && touched.name ? 'border-red-400' : ''
+                      }`}
                       placeholder="John Smith"
                       disabled={isSubmitting}
+                      autoComplete="name"
                     />
+                    {renderFieldError('name')}
                   </div>
                   
                   <div>
-                    <Label htmlFor="email" className="text-gray-300 mb-2 text-sm">Email Address *</Label>
+                    <Label htmlFor="email" className="text-gray-300 mb-2 text-sm">
+                      Email Address <span className="text-red-400">*</span>
+                    </Label>
                     <Input 
                       id="email"
                       name="email"
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
-                      required
-                      className="bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37]"
+                      onBlur={handleBlur}
+                      aria-invalid={errors.email && touched.email ? "true" : "false"}
+                      aria-describedby={errors.email && touched.email ? "email-error" : undefined}
+                      className={`bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37] ${
+                        errors.email && touched.email ? 'border-red-400' : ''
+                      }`}
                       placeholder="john@example.com"
                       disabled={isSubmitting}
+                      autoComplete="email"
                     />
+                    {renderFieldError('email')}
                   </div>
                 </div>
                 
                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <Label htmlFor="phone" className="text-gray-300 mb-2 text-sm">Phone Number *</Label>
+                    <Label htmlFor="phone" className="text-gray-300 mb-2 text-sm">
+                      Phone Number <span className="text-red-400">*</span>
+                    </Label>
                     <Input 
                       id="phone"
                       name="phone"
                       type="tel"
                       value={formData.phone}
                       onChange={handleChange}
-                      required
-                      className="bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37]"
+                      onBlur={handleBlur}
+                      aria-invalid={errors.phone && touched.phone ? "true" : "false"}
+                      aria-describedby={errors.phone && touched.phone ? "phone-error" : undefined}
+                      className={`bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37] ${
+                        errors.phone && touched.phone ? 'border-red-400' : ''
+                      }`}
                       placeholder="0499 613 240"
                       disabled={isSubmitting}
+                      autoComplete="tel"
                     />
+                    {renderFieldError('phone')}
                   </div>
                   
                   <div>
-                    <Label htmlFor="suburb" className="text-gray-300 mb-2 text-sm">Suburb *</Label>
+                    <Label htmlFor="suburb" className="text-gray-300 mb-2 text-sm">
+                      Suburb <span className="text-red-400">*</span>
+                    </Label>
                     <Input 
                       id="suburb"
                       name="suburb"
                       value={formData.suburb}
                       onChange={handleChange}
-                      required
-                      className="bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37]"
+                      onBlur={handleBlur}
+                      aria-invalid={errors.suburb && touched.suburb ? "true" : "false"}
+                      aria-describedby={errors.suburb && touched.suburb ? "suburb-error" : undefined}
+                      className={`bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37] ${
+                        errors.suburb && touched.suburb ? 'border-red-400' : ''
+                      }`}
                       placeholder="Cottesloe"
                       disabled={isSubmitting}
+                      autoComplete="address-level2"
                     />
+                    {renderFieldError('suburb')}
                   </div>
                 </div>
                 
                 <div>
-                  <Label htmlFor="message" className="text-gray-300 mb-2 text-sm">Tell Us About Your Project *</Label>
+                  <Label htmlFor="message" className="text-gray-300 mb-2 text-sm">
+                    Tell Us About Your Project <span className="text-red-400">*</span>
+                  </Label>
                   <Textarea 
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    required
+                    onBlur={handleBlur}
+                    aria-invalid={errors.message && touched.message ? "true" : "false"}
+                    aria-describedby={errors.message && touched.message ? "message-error" : undefined}
                     rows={5}
-                    className="bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37] resize-none"
+                    className={`bg-gray-800 border-gray-700 text-white focus:border-[#d4af37] focus:ring-[#d4af37] resize-none ${
+                      errors.message && touched.message ? 'border-red-400' : ''
+                    }`}
                     placeholder="Please describe your pool renovation needs, current pool condition, and what you'd like to achieve..."
                     disabled={isSubmitting}
                   />
+                  {renderFieldError('message')}
                 </div>
                 
                 <div className="flex items-start gap-3">
