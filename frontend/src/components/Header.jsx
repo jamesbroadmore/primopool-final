@@ -73,14 +73,6 @@ const Header = () => {
               Services
             </Link>
             <Link 
-              to="/gallery" 
-              className={`text-sm transition-colors ${
-                isActive('/gallery') ? 'text-[#d4af37]' : 'text-gray-300 hover:text-[#d4af37]'
-              }`}
-            >
-              Gallery
-            </Link>
-            <Link 
               to="/pool-plaster" 
               className={`text-sm transition-colors ${
                 isActive('/pool-plaster') ? 'text-[#d4af37]' : 'text-gray-300 hover:text-[#d4af37]'
@@ -96,9 +88,11 @@ const Header = () => {
             >
               Contact
             </Link>
-            <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium">
-              GET FREE QUOTE
-            </Button>
+            <Link to="/contact">
+              <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium">
+                GET FREE QUOTE
+              </Button>
+            </Link>
           </nav>
         </div>
       </div>

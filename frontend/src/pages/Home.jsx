@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Droplets, Paintbrush, Grid3X3, Sparkles, Quote } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
-import { services, process, testimonials, faqs, suburbs } from '../data/mock';
+import { services, process, testimonials, faqs } from '../data/mock';
 
 const Home = () => {
   const iconMap = {
@@ -43,13 +43,17 @@ const Home = () => {
           </p>
           
           <div className="flex gap-4 justify-center">
-            <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium text-base px-8 py-6 group">
-              GET FREE QUOTE
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-medium text-base px-8 py-6">
-              VIEW OUR WORK
-            </Button>
+            <Link to="/contact">
+              <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium text-base px-8 py-6 group">
+                GET FREE QUOTE
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <Link to="/services">
+              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-medium text-base px-8 py-6">
+                VIEW OUR WORK
+              </Button>
+            </Link>
           </div>
         </div>
         
@@ -122,9 +126,11 @@ const Home = () => {
                   <span className="text-gray-300 text-sm">Free on-site consultation</span>
                 </div>
               </div>
-              <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium">
-                Get Free Quote
-              </Button>
+              <Link to="/contact">
+                <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium">
+                  Get Free Quote
+                </Button>
+              </Link>
             </div>
             <div className="relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl">
@@ -265,36 +271,6 @@ const Home = () => {
         </div>
       </section>
       
-      {/* Coverage Section */}
-      <section className="py-24 bg-[#0a0f1a]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <span className="text-[#d4af37] text-sm tracking-widest uppercase mb-4 block">Coverage</span>
-            <h2 className="text-5xl font-serif text-white mb-4">
-              We Service All Perth
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-              From Two Rocks to Mandurah — we cover the entire Perth Metropolitan Area and surrounds.
-            </p>
-          </div>
-          
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-3 md:grid-cols-5 gap-4 mb-8">
-              {suburbs.map((suburb, index) => (
-                <div key={index} className="text-center py-3 px-4 bg-gray-900/50 border border-gray-700 rounded-lg text-gray-300 text-sm hover:border-[#d4af37] hover:text-[#d4af37] transition-colors">
-                  {suburb}
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-gray-400">
-              Not sure if we service your area?{' '}
-              <a href="tel:0499613240" className="text-[#d4af37] hover:underline">
-                Call us on 0499 613 240
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
       
       {/* FAQ Section */}
       <section className="py-24 bg-gradient-to-b from-[#0a0f1a] to-[#0f1419]">

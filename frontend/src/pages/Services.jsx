@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Droplets, Paintbrush, Grid3X3, Sparkles, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 
@@ -98,9 +99,11 @@ const Services = () => {
                   </div>
                 ))}
               </div>
-              <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium">
-                Get Free Quote
-              </Button>
+              <Link to="/contact">
+                <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium">
+                  Get Free Quote
+                </Button>
+              </Link>
             </div>
             <div className={index % 2 === 1 ? 'md:order-1' : ''}>
               <div className="rounded-2xl overflow-hidden shadow-2xl">
@@ -125,9 +128,11 @@ const Services = () => {
             Contact us today for a free consultation and quote. We'll help bring your pool vision to life.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium px-8 py-6">
-              Request Free Quote
-            </Button>
+            <Link to="/contact">
+              <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium px-8 py-6">
+                Request Free Quote
+              </Button>
+            </Link>
             <a href="tel:0499613240">
               <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-medium px-8 py-6">
                 Call 0499 613 240

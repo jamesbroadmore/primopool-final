@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Phone } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -15,9 +16,11 @@ const Footer = () => {
               <Phone className="w-4 h-4" />
               <span className="text-sm">Call Now</span>
             </a>
-            <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium">
-              Free Quote
-            </Button>
+            <Link to="/contact">
+              <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium">
+                Free Quote
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { poolPlasterColors } from '../data/mock';
 import { CheckCircle } from 'lucide-react';
@@ -97,9 +98,11 @@ const PoolPlaster = () => {
           We'll bring physical samples to your free consultation so you can see how each colour looks in your backyard lighting.
         </p>
         <div className="flex gap-4 justify-center">
-          <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium px-8 py-6">
-            Book Free Consultation
-          </Button>
+          <Link to="/contact">
+            <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium px-8 py-6">
+              Book Free Consultation
+            </Button>
+          </Link>
           <a href="tel:0499613240">
             <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-medium px-8 py-6">
               Call 0499 613 240
