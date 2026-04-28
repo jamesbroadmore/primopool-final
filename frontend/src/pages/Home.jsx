@@ -26,31 +26,31 @@ const Home = () => {
       >
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-[#0a0f1a]"></div>
         
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          <div className="inline-block mb-6">
-            <span className="text-[#d4af37] text-sm tracking-widest uppercase border border-[#d4af37] px-4 py-1.5 rounded-full">
-              ★ Perth Pool Renovation Specialists
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
+          <div className="inline-block mb-4 sm:mb-6">
+            <span className="text-[#d4af37] text-xs sm:text-sm tracking-widest uppercase border border-[#d4af37] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full">
+              Perth Pool Renovation Specialists
             </span>
           </div>
           
-          <h1 className="text-6xl md:text-7xl font-serif text-white mb-4 leading-tight">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif text-white mb-4 leading-tight text-balance">
             Transform Your Pool<br />
             <span className="text-[#d4af37] italic">Into a Masterpiece</span>
           </h1>
           
-          <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-300 mb-8 sm:mb-10 max-w-3xl mx-auto text-pretty">
             Over 25 years of expert pool renovations, resurfacing, and tiling across Perth. Trusted by 500+ homeowners. Free on-site quotes.
           </p>
           
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link to="/contact">
-              <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium text-base px-8 py-6 group">
+              <Button className="bg-[#d4af37] hover:bg-[#b8941f] text-black font-medium text-base px-6 sm:px-8 py-5 sm:py-6 group w-full sm:w-auto">
                 GET FREE QUOTE
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Button>
             </Link>
-            <Link to="/services">
-              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-medium text-base px-8 py-6">
+            <Link to="/gallery">
+              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black font-medium text-base px-6 sm:px-8 py-5 sm:py-6 w-full sm:w-auto">
                 VIEW OUR WORK
               </Button>
             </Link>
@@ -59,25 +59,25 @@ const Home = () => {
         
         {/* Stats Bar */}
         <div className="absolute bottom-0 left-0 right-0 z-10">
-          <div className="max-w-6xl mx-auto px-6 pb-10">
-            <div className="grid grid-cols-4 gap-6">
-              <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg p-6 text-center">
-                <div className="text-4xl font-bold text-[#d4af37] mb-1">25+</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wider">Years Experience</div>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-6 sm:pb-10">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+              <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg p-4 sm:p-6 text-center">
+                <div className="text-2xl sm:text-4xl font-bold text-[#d4af37] mb-1">25+</div>
+                <div className="text-[10px] sm:text-xs text-gray-300 uppercase tracking-wider">Years Experience</div>
               </div>
-              <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg p-6 text-center">
-                <div className="text-4xl font-bold text-[#d4af37] mb-1">500+</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wider">Pools Renovated</div>
+              <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg p-4 sm:p-6 text-center">
+                <div className="text-2xl sm:text-4xl font-bold text-[#d4af37] mb-1">500+</div>
+                <div className="text-[10px] sm:text-xs text-gray-300 uppercase tracking-wider">Pools Renovated</div>
               </div>
-              <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg p-6 text-center">
-                <div className="text-4xl font-bold text-[#d4af37] mb-1">100%</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wider">Quality Guaranteed</div>
+              <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg p-4 sm:p-6 text-center">
+                <div className="text-2xl sm:text-4xl font-bold text-[#d4af37] mb-1">100%</div>
+                <div className="text-[10px] sm:text-xs text-gray-300 uppercase tracking-wider">Quality Guaranteed</div>
               </div>
-              <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg p-6 text-center">
-                <div className="text-4xl font-bold text-[#d4af37] mb-1 flex items-center justify-center gap-1">
-                  5<Star className="w-6 h-6 fill-current" />
+              <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg p-4 sm:p-6 text-center">
+                <div className="text-2xl sm:text-4xl font-bold text-[#d4af37] mb-1 flex items-center justify-center gap-1">
+                  5<Star className="w-4 h-4 sm:w-6 sm:h-6 fill-current" aria-hidden="true" />
                 </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wider">Google Rating</div>
+                <div className="text-[10px] sm:text-xs text-gray-300 uppercase tracking-wider">Google Rating</div>
               </div>
             </div>
           </div>
