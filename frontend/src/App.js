@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { Toaster } from "./components/ui/toaster";
 
 // Lazy load pages for better performance
@@ -12,6 +13,7 @@ const Services = lazy(() => import("./pages/Services"));
 const PoolPlaster = lazy(() => import("./pages/PoolPlaster"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -28,25 +30,28 @@ const PageLoader = () => (
 
 function App() {
   return (
-    <div className="App min-h-screen flex flex-col">
-      <BrowserRouter>
-        <Header />
-        <main className="flex-1">
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/pool-plaster" element={<PoolPlaster />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </Suspense>
-        </main>
-        <Footer />
-        <WhatsAppButton />
-        <Toaster />
-      </BrowserRouter>
-    </div>
+    <ErrorBoundary>
+      <div className="App min-h-screen flex flex-col">
+        <BrowserRouter>
+          <Header />
+          <main className="flex-1">
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/pool-plaster" element={<PoolPlaster />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <Footer />
+          <WhatsAppButton />
+          <Toaster />
+        </BrowserRouter>
+      </div>
+    </ErrorBoundary>
   );
 }
 
